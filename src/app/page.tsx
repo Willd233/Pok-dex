@@ -1,5 +1,7 @@
-import Pokedex from './component/Pokedex'
-import styles from './page.module.css'
+import Pokedex from './components/Pokedex/Pokedex'
+import styles from '../style/index.module.scss'
+import '../style/resect.scss'
+
 
 export default function Home() {
   return (
