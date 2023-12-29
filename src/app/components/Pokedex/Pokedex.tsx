@@ -3,11 +3,13 @@ import { useEffect, useState } from "react"
 import styles from '../Pokedex/Pokedex.module.scss'
 
 
+
 interface Pokemon {
     id: number;
     name: string;
     img: string;
-  }
+
+}
 export default function Pokedex() {
 
     const [pokemones, setPokemones] = useState<Pokemon[]>([]);
@@ -29,7 +31,7 @@ export default function Pokedex() {
                 return {
                     id: poke.id,
                     name: poke.name,
-                    img: poke.sprites.other.dream_world.front_default
+                    img: poke.sprites.other.dream_world.front_default,
                 }
             })
             setPokemones(await Promise.all(newPokemones))
@@ -39,25 +41,28 @@ export default function Pokedex() {
 
     return (
         <>
-        <div className={styles.titleContainer}>
-        <h1>Pokedex</h1>
-        </div>
-        <section className={styles.container}>
-            
-            {pokemones.map((pokemon, i) =>{
-                return(
-                    <article 
-                    key={i}
-                    className={styles.cars}
-                    >
-                        <h2>{pokemon.name}</h2>
-                        <img src={pokemon.img} alt={pokemon.name} />
-                        <span>#ID 0000{pokemon.id}</span>
-                    </article>
-                )
-            }
-                )}
-        </section>
+            <div className={styles.container}>
+                <article className={styles.midBall1}>
+                    <img src="pokeball-up_1.svg" alt="" />
+                </article>
+                <article className={styles.pokeStatus}>
+                    status
+                </article>
+                <section className={styles.pokeContainer}>
+                    {pokemones.map((pokemon, i) => {
+                        return (
+
+                            <article
+                                key={i}
+                                className={styles.cars}
+                            >
+                                <span><img src={pokemon.img} alt={pokemon.name} />#ID 00{pokemon.id} <h2>{pokemon.name}</h2></span>
+                            </article>
+                        )
+                    }
+                    )}
+                </section>
+            </div>
         </>
     )
 }
