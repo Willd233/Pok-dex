@@ -6,79 +6,170 @@
     align-items: center;
     margin: 0 auto;
 
-    &>h1{
-       font-size: 2rem; 
+    &>h1 {
+        font-size: 2rem;
     }
 }
 
-.pokeContainer {
-    width: 100%;
-    display: grid;
-    border: #4b1f1f5b solid 2px;
-    grid-column: 5/5;
-    overflow-y: auto; /* Add vertical scroll when content exceeds height */
-    max-height: 600px;
 
-    
+
+.pokeSectionContainer {
+    width: 20vw;
+    height: 76vh;
+    margin-top: 125px;
+    margin-right: 20px;
+
+    .infinite {
+        overflow-y: scroll;
+        height: 60vh;
+    }
+
+    .pokeContainer {
+        width: 100%;
+        display: grid;
+        grid-column: 5/5;
+        justify-items: center;
+
+
+        &>img {
+            width: 150px;
+            height: 150px;
+            animation-name: positions;
+            animation-duration: 3s;
+            position: absolute;
+            top: 470px;
+            right: 60px;
+
+
+        }
+
+        @keyframes positions {
+            0% {
+                transform: rotate(0);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    }
 }
-.container{
+
+
+.container {
     width: 100%;
-    display:  grid;
+    height: 89vh;
+    display: grid;
     grid-template-columns: repeat(5, 1fr);
     margin-block: 20px;
     align-items: center;
+    border-radius: 25px;
+    overflow: hidden;
 
-  }
 
-  .midBall1{
-    width: 400px;
-    height: 60vh;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background-color: #209c932a;
+    border-radius: 25px 0 0 25px;
+    animation-name: position-Y;
+    animation-duration: 3s;
+
+
+
+    @keyframes position-Y {
+        0% {
+            transform: translateX(300%);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+}
+
+.midBall1 {
+    width: 19%;
+    height: 84vh;
     display: grid;
     justify-content: center;
+    position: absolute;
+    grid-column: 1/5;
+    animation-name: position-Y;
+    animation-duration: 3s;
+    align-items: center;
+    z-index: 1;
 
-
-    &>img{
+    &>img {
         width: 500px;
-        height: 60vh;
+        height: 36vh;
         transform: rotate(270deg);
-    }
-  }
 
-.pokeStatus{
+    }
+}
+
+@keyframes position-Y {
+    0% {
+        transform: translateX(300%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+.pokeStatus {
     width: 100%;
     height: 80vh;
     grid-column: 2/5;
-    display: grid;
-    align-content: center;
-    justify-content: space-around;
-  }
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .cars {
     width: 95%;
-    height: auto;
+    height: 30px;
     display: grid;
     margin-top: 20px;
-    background: #923636;
+    background: #162788a6;
     border-radius: 20px;
     cursor: pointer;
-    &:hover{
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+
+    &:hover {
         transform: scale(1.05);
-        
+
     }
 
     &>span {
         width: 100%;
+        height: 30px;
         display: grid;
-        grid-template-columns: repeat(3,1fr);
+        grid-template-columns: repeat(3, 1fr);
         align-items: center;
-        justify-items: center;   
-    
-        &>svg{
+        justify-items: center;
+
+        &>svg {
             width: 30px;
             height: 30px;
             margin: 0;
         }
+
         &>img {
             width: 30px;
+            height: 28px;
             margin: 0 auto;
         }
     }

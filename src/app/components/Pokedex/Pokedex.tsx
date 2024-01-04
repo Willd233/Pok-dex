@@ -1,67 +1,77 @@
 "use client"
-import { useEffect, useState } from "react"
+import usePokemones from '@/hook/usePokemones'
 import styles from '../Pokedex/Pokedex.module.scss'
+import { Search } from '../Search/search';
+import PokeStats from '../PokeStats/PokeStats';
+import { SetStateAction, useRef, useState } from 'react';
 
-
-
-interface Pokemon {
-    id: number;
-    name: string;
-    img: string;
-
-}
 export default function Pokedex() {
+    const { pokemones, loading,searchPokemons,useIntersectionObserver} = usePokemones();
+    const moreDataRef = useRef<HTMLDivElement>(null);
 
-    const [pokemones, setPokemones] = useState<Pokemon[]>([]);
-
-    useEffect(() => {
-
-        const getPokemones = async () => {
-            const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=100&offset=0');
-            const listPokemones = await response.json();
-            const { results } = listPokemones;
+    useIntersectionObserver(moreDataRef);
 
 
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPokemon, setSelectedPokemon] = useState({});
+    const [search, setSearch] = useState('')
 
-            const newPokemones = results.map(async (pokemon: { url: string }) => {
+    const handleShowModal = (pokemon: SetStateAction<{}>) => {
+        setShowModal(true);
+        setSelectedPokemon(pokemon);
+    };
 
-                const response = await fetch(pokemon.url)
-                const poke = await response.json()
+    const searchPokemones = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault()
+        if (!search) return
 
-                return {
-                    id: poke.id,
-                    name: poke.name,
-                    img: poke.sprites.other.dream_world.front_default,
-                }
-            })
-            setPokemones(await Promise.all(newPokemones))
-        }
-        getPokemones();
-    }, [])
+        const pokemons = await searchPokemons(search)
 
+        setShowModal(true)
+        setSelectedPokemon(pokemons)
+
+        console.log('enciando')
+    }
+
+
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
     return (
         <>
             <div className={styles.container}>
                 <article className={styles.midBall1}>
-                    <img src="pokeball-up_1.svg" alt="" />
+                    <img src="pokeball-up_1.svg" />
                 </article>
                 <article className={styles.pokeStatus}>
-                    status
+                    {showModal && <PokeStats pokemon={selectedPokemon} onClose={handleCloseModal} />}
                 </article>
-                <section className={styles.pokeContainer}>
-                    {pokemones.map((pokemon, i) => {
-                        return (
+                <section className={styles.pokeSectionContainer}>
+                    <Search search={search} setSearch={setSearch} searchPokemones={searchPokemones} />
+                    <div className={styles.infinite} >
+                        <section
+                            className={styles.pokeContainer}>
+                            {loading && <img src="pokeball_loading.svg" alt="" />}
+                            {pokemones.map((pokemon, i,) => {
+                                return (
+                                    <article
+                                        key={i}
+                                        className={styles.cars}
+                                        onClick={() => handleShowModal(pokemon)}
+                                    >
+                                        <span><img src={pokemon.img} alt={pokemon.name} />#ID 00{pokemon.id} <h2>{pokemon.name}</h2> </span>
+                                    </article>
+                                )
+                            }
+                            )}
+                        </section>
+                        <div ref={moreDataRef} id='moreData'>Loanding...</div>
+                    </div>
+                   
 
-                            <article
-                                key={i}
-                                className={styles.cars}
-                            >
-                                <span><img src={pokemon.img} alt={pokemon.name} />#ID 00{pokemon.id} <h2>{pokemon.name}</h2></span>
-                            </article>
-                        )
-                    }
-                    )}
                 </section>
+
             </div>
         </>
     )
